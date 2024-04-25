@@ -155,6 +155,7 @@ No known bugs at this time.
 
 ## Authors
 Gabriel Akinshola - [Github](https://github.com/Code021-raelle) / [x](https://x.com/gabbyextra)
+Dayo Oshinnaiye - [Github](https://github.com/oshybobo)
 Alexa Orrico - [Github](https://github.com/alexaorrico) / [Twitter](https://twitter.com/alexa_orrico)  
 Jennifer Huang - [Github](https://github.com/jhuang10123) / [Twitter](https://twitter.com/earthtojhuang)
 
