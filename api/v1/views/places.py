@@ -70,7 +70,7 @@ def update_place(place_id):
     return jsonify(place.to_dict()), 200
 
 
-@app_views.route('/places/<place_id>', methods['DELETE'], strict_slashes=False)
+@app_views.route('/places/<place_id>', methods=['DELETE'], strict_slashes=False)
 def delete_place(place_id):
     """Delete a Place object"""
     place = storage.get(Place, place_id)

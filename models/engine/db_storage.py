@@ -4,6 +4,7 @@ Contains the class DBStorage
 """
 
 import models
+from models import *
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
 from models.city import City
@@ -13,7 +14,7 @@ from models.state import State
 from models.user import User
 from os import getenv
 import sqlalchemy
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {"Amenity": Amenity, "City": City,
@@ -84,7 +85,12 @@ class DBStorage:
 
     def count(self, cls=None):
         """Count the number of objects in storage"""
-        if cls:
-            return len([obj for obj in self.__objects.values(
-                ) if isinstance(obj, cls)])
-        return len(self.__objects)
+        count = 0
+        classes = [cls] if cls else [
+                State, City, User, Place, Review, Amenity]
+        Session = sessionmaker(bind=self.__engine)
+        session = Session()
+        for cls in classes:
+            count += session.query(func.count(cls.id)).scalar()
+        session.close()
+        return count
