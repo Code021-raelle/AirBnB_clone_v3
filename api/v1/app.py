@@ -3,12 +3,17 @@
 """
 from flask import Flask, jsonify
 from models import storage
+from flask_cors import CORS
 from api.v1.views import app_views
+from api.v1.views.places_amenities import places_amenities
 import os
 
 app = Flask(__name__)
-
 app.register_blueprint(app_views)
+app.register_blueprint(places_amenities)
+
+
+cors = CORS(app, resources={r"/api/*": {"origins": "0.0.0.0"}})
 
 
 @app.teardown_appcontext
@@ -24,6 +29,4 @@ def page_not_found(error):
 
 
 if __name__ == "__main__":
-    host = os.getenv('HBNB_API_HOST', '0.0.0.0')
-    port = int(os.getenv('HBNB_API_PORT', 5000))
-    app.run(host=host, port=port, threaded=True)
+    app.run(host='0.0.0.0', port=5000)
