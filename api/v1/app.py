@@ -7,6 +7,7 @@ from flask_cors import CORS
 from api.v1.views import app_views
 from api.v1.views.places_amenities import places_amenities
 from os import getenv
+import os
 
 app = Flask(__name__)
 app.register_blueprint(app_views)

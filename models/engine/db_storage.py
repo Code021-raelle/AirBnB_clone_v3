@@ -89,13 +89,11 @@ class DBStorage:
 
     def count(self, cls=None):
         """Count the number of objects in storage"""
-        session = self.Session()
-        try:
-            if cls:
-                return session.query(cls).count()
-            else:
-                return session.query(Base).count()
-        except Exception as e:
-            print(e)
-        finally:
-            session.close()
+        count = 0
+        classes = [cls] if cls else [State, City, User, Place, Review, Amenity]
+        Session = sessionmaker(bind=self.__engine)
+        session = Session()
+        for cls in classes:
+            count += session.query(func.count(cls.id)).scalar()
+        session.close()
+        return count
