@@ -81,6 +81,19 @@ test_file_storage.py'])
         self.assertEqual(storage.get(State, state_id), new_state)
         self.assertIsNone(storage.get(State, "invalid_id"))
 
+    def test_get(self):
+        """Test the .get() method of FileStorage."""
+        first_state_id = list(storage.all(State).values())[0].id
+        first_state = storage.get(State, first_state_id)
+        self.assertIsNotNone(first_state)
+        self.assertEqual(first_state.id, first_state_id)
+
+    def test_count(self):
+        """Test the .count() method of FileStorage."""
+        all_count = storage.count()
+        state_count = storage.count(State)
+        self.assertGreaterEqual(all_count, state_count)
+
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""

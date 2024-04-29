@@ -10,7 +10,7 @@ from api.v1.views import app_views
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
 def get_states():
     """Retrieve the list of all State objects"""
-    states = storage.all(State).values()
+    states = Storage.all(State).values()
     return jsonify([state.to_dict() for state in states])
 
 
