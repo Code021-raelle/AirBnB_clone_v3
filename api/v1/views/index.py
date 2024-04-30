@@ -12,9 +12,19 @@ from models.state import State
 from models.user import User
 
 
-@app_views.route('/stats', methods=['GET'])
-def api_status():
-    """Retrieve the number of each object type"""
+@app_views.route('/status', methods=['GET'], strict_slashes=False)
+def status():
+    """
+    Retrieve the number of each object type
+    """
+    return jsonify({"status": "OK"})
+
+
+@app_views.route('/stats', methods=['GET'], strict_slashes=False)
+def stats():
+    """
+    Returns the count of each object type.
+    """
     stats = {
             "amenities": storage.count(Amenity),
             "cities": storage.count(City),

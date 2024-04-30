@@ -78,16 +78,19 @@ class DBStorage:
 
     def get(self, cls, id):
         """Retrieve an objet based on class and ID"""
-        if cls and id:
-            key = "{}.{}".format(cls.__name__, id)
-            return self.__objects.get(key)
-        return None
+        session = self.Session()
+        try:
+            obj = session.query(cls).filter_by(id=id).one_or_none()
+            return obj
+        except Exception as e:
+            print(e)
+        finally:
+            session.close()
 
     def count(self, cls=None):
         """Count the number of objects in storage"""
         count = 0
-        classes = [cls] if cls else [
-                State, City, User, Place, Review, Amenity]
+        classes = [cls] if cls else [State, City, User, Place, Review, Amenity]
         Session = sessionmaker(bind=self.__engine)
         session = Session()
         for cls in classes:

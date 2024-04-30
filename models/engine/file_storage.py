@@ -71,14 +71,21 @@ class FileStorage:
 
     def get(self, cls, id):
         """Retrieve an object based on class and ID"""
-        if cls and id:
-            key = "{}.{}".format(cls.__name__, id)
-            return self.__objects.get(key)
-        return None
+        try:
+            with open(self.__file_path, 'r') as f:
+                objs = json.load(f)
+            return objs.get(cls.__name__, {}).get(id)
+        except Exception as e:
+            print(e)
 
     def count(self, cls=None):
         """Count the number of objects in storage"""
-        if cls:
-            return len([obj for obj in self.__objects.values(
-                ) if obj.__class__ == cls])
-        return len(self.__objects)
+        try:
+            with open(self.__file_path, 'r') as f:
+                objs = json.load(f)
+            if cls:
+                return len(objs.get(cls.__name__, {}))
+            else:
+                return sum(len(v) for v in objs.values())
+        except Exception as e:
+            print(e)
