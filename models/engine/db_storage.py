@@ -4,7 +4,6 @@ Contains the class DBStorage
 """
 
 import models
-from models import *
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
 from models.city import City
@@ -14,7 +13,7 @@ from models.state import State
 from models.user import User
 from os import getenv
 import sqlalchemy
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {"Amenity": Amenity, "City": City,
@@ -77,23 +76,17 @@ class DBStorage:
         self.__session.remove()
 
     def get(self, cls, id):
-        """Retrieve an objet based on class and ID"""
-        session = self.Session()
-        try:
-            obj = session.query(cls).filter_by(id=id).one_or_none()
-            return obj
-        except Exception as e:
-            print(e)
-        finally:
-            session.close()
+        """ retrieves """
+        if cls in classes.values() and id and type(id) == str:
+            d_obj = self.all(cls)
+            for key, value in d_obj.items():
+                if key.split(".")[1] == id:
+                    return value
+        return None
 
     def count(self, cls=None):
-        """Count the number of objects in storage"""
-        count = 0
-        classes = [cls] if cls else [State, City, User, Place, Review, Amenity]
-        Session = sessionmaker(bind=self.__engine)
-        session = Session()
-        for cls in classes:
-            count += session.query(func.count(cls.id)).scalar()
-        session.close()
-        return count
+        """ counts """
+        data = self.all(cls)
+        if cls in classes.values():
+            data = self.all(cls)
+        return len(data)
